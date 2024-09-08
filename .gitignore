@@ -1,0 +1,8 @@
+.cache/
+build/
+
+extern/*
+!extern/CMakeLists.txt
+
+html/
+latex/
