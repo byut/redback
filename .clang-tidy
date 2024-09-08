@@ -1,0 +1,26 @@
+Checks:
+  -*,
+  bugprone-*,
+  misc-*,
+  performance-*,
+  readability-*,
+  clang-analyzer-*,
+
+  linuxkernel-must-check-errs,
+
+  -bugprone-easily-swappable-parameters,
+  -misc-non-private-member-variables-in-classes,
+  -performance-no-int-to-ptr, 
+  -readability-braces-around-statements,
+  -readability-convert-member-functions-to-static,
+  -readability-function-cognitive-complexity,
+  -readability-function-size,
+  -readability-identifier-length,
+  -readability-magic-numbers,
+  -readability-redundant-access-specifiers,
+  -readability-static-accessed-through-instance,
+
+UseColor: true
+WarningsAsErrors: "*"
+FormatStyle: "file"
+# AnalyzeTemporaryDtors: false
