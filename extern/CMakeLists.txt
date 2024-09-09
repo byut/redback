@@ -18,6 +18,6 @@ endif()
 
 #
 
-# add_subdirectory(<submodule> EXCLUDE_FROM_ALL)
+add_subdirectory(Unity EXCLUDE_FROM_ALL)
 
 #

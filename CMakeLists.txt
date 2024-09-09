@@ -35,6 +35,10 @@ set(C_COMPILE_OPTIONS
 
 #
 
+add_subdirectory(test)
+
+#
+
 set(PROJECT_EXECUTABLE ${PROJECT_NAME})
 
 add_executable(
