@@ -13,6 +13,15 @@ elseif(NOT GCC_EXE)
     message(FATAL_ERROR "gcc not found in $PATH.")
 endif()
 
+find_program(VALGRIND_EXE NAMES "valgrind")
+if (VALGRIND_EXE)
+    message(STATUS "Found valgrind : ${VALGRIND_EXE}.")
+    set(VALGRIND_COMMAND ${VALGRIND_EXE})
+    set(VALGRIND_COMMAND_OPTIONS --leak-check=full)
+elseif (NOT VALGRIND_EXE)
+    message(AUTHOR_WARNING "valgrind not found in $PATH.")
+endif()
+
 #
 
 project(

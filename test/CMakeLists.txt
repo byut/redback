@@ -12,6 +12,14 @@ enable_testing()
 
 #
 
+if (DEFINED VALGRIND_COMMAND)
+    set(DART_CONFIGURATION ${CMAKE_CURRENT_BINARY_DIR}/DartConfiguration.tcl)
+    write_file(${DART_CONFIGURATION} "MemoryCheckCommand: ${VALGRIND_COMMAND}")
+    write_file(${DART_CONFIGURATION} "MemoryCheckCommandOptions: ${VALGRIND_COMMAND_OPTIONS}" APPEND)
+endif()
+
+#
+
 set(PROJECT_UNITY_TESTS ${PROJECT_NAME}-unity-tests)
 set(PROJECT_UNITY_LIBTARGET unity)
 
