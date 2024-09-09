@@ -20,6 +20,10 @@ project(
     VERSION 0.1.0
     LANGUAGES C)
 
+add_subdirectory(extern)
+
+#
+
 set(CMAKE_C_COMPILER ${GCC_EXE})
 set(CMAKE_C_STANDARD 23)
 
