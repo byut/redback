@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.5)
 
+# Save the timestamp of the current build
+string(TIMESTAMP REDBACK_BUILD_TIMESTAMP "%Y-%m-%d %H:%M")
+
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 endif()
@@ -72,6 +75,13 @@ add_executable(
 target_compile_options(
     ${PROJECT_EXECUTABLE}
     PRIVATE ${C_COMPILE_OPTIONS})
+
+target_compile_definitions(
+    ${PROJECT_EXECUTABLE}
+    PRIVATE -DREDBACK_PROJECT_NAME="${CMAKE_PROJECT_NAME}"
+    PRIVATE -DREDBACK_PROJECT_VERSION="${CMAKE_PROJECT_VERSION}"
+    PRIVATE -DREDBACK_BUILD_TYPE="${CMAKE_BUILD_TYPE}"
+    PRIVATE -DREDBACK_BUILD_TIMESTAMP="${REDBACK_BUILD_TIMESTAMP}")
 
 target_link_libraries(
     ${PROJECT_EXECUTABLE}
