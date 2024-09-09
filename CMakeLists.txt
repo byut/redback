@@ -58,6 +58,7 @@ set(C_COMPILE_OPTIONS
 #
 
 add_subdirectory(include)
+add_subdirectory(src)
 add_subdirectory(test)
 
 #
@@ -71,6 +72,14 @@ add_executable(
 target_compile_options(
     ${PROJECT_EXECUTABLE}
     PRIVATE ${C_COMPILE_OPTIONS})
+
+target_link_libraries(
+    ${PROJECT_EXECUTABLE}
+    PRIVATE ${PROJECT_SOURCELIB})
+
+target_include_directories(
+    ${PROJECT_EXECUTABLE}
+    PRIVATE ${PROJECT_SOURCE_DIR}/include)
 
 if (DEFINED PROJECT_HEADERS)
     add_dependencies(${PROJECT_EXECUTABLE} ${PROJECT_HEADERS})
