@@ -1,3 +1,6 @@
 [submodule "extern/Unity"]
 	path = extern/Unity
 	url = https://github.com/ThrowTheSwitch/Unity
+[submodule "extern/libevent"]
+	path = extern/libevent
+	url = https://github.com/libevent/libevent

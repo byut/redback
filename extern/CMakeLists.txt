@@ -19,5 +19,6 @@ endif()
 #
 
 add_subdirectory(Unity EXCLUDE_FROM_ALL)
+add_subdirectory(libevent EXCLUDE_FROM_ALL)
 
 #

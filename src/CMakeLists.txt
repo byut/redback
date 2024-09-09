@@ -36,7 +36,18 @@ target_compile_options(
 
 target_include_directories(
     ${PROJECT_SOURCELIB}
+    PRIVATE $<TARGET_PROPERTY:event_core,INCLUDE_DIRECTORIES>
+    PRIVATE $<TARGET_PROPERTY:event_extra,INCLUDE_DIRECTORIES>
+    PRIVATE $<TARGET_PROPERTY:event_pthreads,INCLUDE_DIRECTORIES>
+    PRIVATE $<TARGET_PROPERTY:event_openssl,INCLUDE_DIRECTORIES>
     PUBLIC ${CMAKE_SOURCE_DIR}/include)
+
+target_link_libraries(
+    ${PROJECT_SOURCELIB}
+    PRIVATE event_core
+    PRIVATE event_extra
+    PRIVATE event_pthreads
+    PRIVATE event_openssl)
 
 if (DEFINED PROJECT_HEADERS)
     add_dependencies(${PROJECT_SOURCELIB} ${PROJECT_HEADERS})
