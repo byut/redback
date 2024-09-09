@@ -22,6 +22,19 @@ elseif (NOT VALGRIND_EXE)
     message(AUTHOR_WARNING "valgrind not found in $PATH.")
 endif()
 
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    find_program(CLANG_TIDY_EXE NAMES "clang-tidy")
+    if (CLANG_TIDY_EXE)
+        message(STATUS "Found clang-tidy : ${CLANG_TIDY_EXE}.")
+        set(CLANG_TIDY_COMMAND ${CLANG_TIDY_EXE}
+            --config-file ${CMAKE_SOURCE_DIR}/.clang-tidy
+            -p ${CMAKE_BINARY_DIR}
+            --quiet)
+    elseif(NOT CLANG_TIDY_EXE)
+        message(AUTHOR_WARNING "clang-tidy not found in $PATH.")
+    endif()
+endif()
+
 #
 
 project(
@@ -44,6 +57,7 @@ set(C_COMPILE_OPTIONS
 
 #
 
+add_subdirectory(include)
 add_subdirectory(test)
 
 #
@@ -57,3 +71,13 @@ add_executable(
 target_compile_options(
     ${PROJECT_EXECUTABLE}
     PRIVATE ${C_COMPILE_OPTIONS})
+
+if (DEFINED PROJECT_HEADERS)
+    add_dependencies(${PROJECT_EXECUTABLE} ${PROJECT_HEADERS})
+endif()
+
+if(DEFINED CLANG_TIDY_COMMAND)
+    set_property(
+        TARGET ${PROJECT_EXECUTABLE}
+        PROPERTY CXX_CLANG_TIDY ${CLANG_TIDY_COMMAND})
+endif()

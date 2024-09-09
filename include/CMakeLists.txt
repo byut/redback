@@ -1,0 +1,33 @@
+cmake_minimum_required(VERSION 3.5)
+
+if (DEFINED CLANG_TIDY_COMMAND)
+    set(PROJECT_HEADERS ${PROJECT_NAME}-headers)
+    set(PROJECT_HEADERS ${PROJECT_HEADERS} PARENT_SCOPE)
+    set(PROJECT_HEADER_STAMPS)
+
+    set(PROJECT_HEADERS_OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/${PROJECT_HEADERS}.dir)
+
+    file(GLOB_RECURSE PROJECT_HEADER_LIST CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/include/redback/*.hpp)
+    foreach(HEADER_INFILE IN ITEMS ${PROJECT_HEADER_LIST})
+        file(RELATIVE_PATH HEADER_OUTFILE ${PROJECT_SOURCE_DIR}/include ${HEADER_INFILE})
+        set(HEADER_OUTFILE ${PROJECT_HEADERS_OUTPUT_DIR}/${HEADER_OUTFILE}.stamp)
+        get_filename_component(HEADER_OUTFILE_DIR ${HEADER_OUTFILE} DIRECTORY)
+
+        if (NOT EXISTS ${HEADER_OUTFILE_DIR})
+            file(MAKE_DIRECTORY ${HEADER_OUTFILE_DIR})
+        endif()
+
+        add_custom_command(
+            OUTPUT ${HEADER_OUTFILE}
+            COMMENT "Checking ${HEADER_INFILE}"
+            COMMAND ${CLANG_TIDY_COMMAND} ${HEADER_INFILE} 2> /dev/null
+            COMMAND ${CMAKE_COMMAND} -E touch ${HEADER_OUTFILE}
+            DEPENDS ${HEADER_INFILE})
+
+        list(APPEND PROJECT_HEADER_STAMPS ${HEADER_OUTFILE})
+    endforeach()
+
+    add_custom_target(
+        ${PROJECT_HEADERS}
+        DEPENDS ${PROJECT_HEADER_STAMPS})
+endif()
