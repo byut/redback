@@ -28,6 +28,7 @@ endif()
 
 add_library(
     ${PROJECT_SOURCELIB} STATIC
+    redback/error.c
     lib.c)
 
 target_compile_options(
