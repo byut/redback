@@ -25,6 +25,7 @@ set(PROJECT_UNITY_LIBTARGET unity)
 
 add_executable(
     ${PROJECT_UNITY_TESTS}
+    redback/memory_pool.c
     test.c)
 
 target_compile_options(
