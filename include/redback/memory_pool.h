@@ -37,6 +37,28 @@ void redback_memory_pool_deallocate(struct redback_memory_pool *pool, const void
 /* # */
 
 ///
+/// @brief ...
+///
+const void *redback_memory_pool_cend(const struct redback_memory_pool *pool);
+
+///
+/// @brief ...
+///
+const void *redback_memory_pool_cbegin(const struct redback_memory_pool *pool);
+
+///
+/// @brief ...
+///
+void *redback_memory_pool_begin(struct redback_memory_pool *pool);
+
+///
+/// @brief Iterate over the memory pool.
+///
+void *redback_memory_pool_iterator_next(const struct redback_memory_pool *pool, const void *it);
+
+/* # */
+
+///
 /// @brief Get the current size of the memory pool.
 ///
 size_t redback_memory_pool_get_size(const struct redback_memory_pool *pool);

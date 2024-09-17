@@ -13,6 +13,7 @@ void redback_memory_pool_allocate_should_increment_pool_size();
 void redback_memory_pool_allocate_should_reuse_memory();
 void redback_memory_pool_allocate_should_not_allocate_beyond_capacity();
 void redback_memory_pool_deallocate_should_decrement_pool_size();
+void redback_memory_pool_iterator_next_should_iterate_to_the_end();
 
 /* # */
 
@@ -31,6 +32,7 @@ int main(int argc, char *argv[]) {
     RUN_TEST(redback_memory_pool_allocate_should_reuse_memory);
     RUN_TEST(redback_memory_pool_allocate_should_not_allocate_beyond_capacity);
     RUN_TEST(redback_memory_pool_deallocate_should_decrement_pool_size);
+    RUN_TEST(redback_memory_pool_iterator_next_should_iterate_to_the_end);
 
     return UNITY_END();
 }

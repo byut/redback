@@ -96,3 +96,35 @@ void redback_memory_pool_deallocate_should_decrement_pool_size() {
 
     redback_memory_pool_free(pool);
 }
+
+void redback_memory_pool_iterator_next_should_iterate_to_the_end() {
+    struct redback_memory_pool *pool;
+    pool = redback_memory_pool_new(sizeof(uint8_t), 5);
+
+    TEST_ASSERT_NOT_NULL(pool);
+
+    [[maybe_unused]] const void *ptr1 = redback_memory_pool_allocate(pool);
+    [[maybe_unused]] const void *ptr2 = redback_memory_pool_allocate(pool);
+    [[maybe_unused]] const void *ptr3 = redback_memory_pool_allocate(pool);
+    [[maybe_unused]] const void *ptr4 = redback_memory_pool_allocate(pool);
+    [[maybe_unused]] const void *ptr5 = redback_memory_pool_allocate(pool);
+
+    redback_memory_pool_deallocate(pool, ptr3);
+    redback_memory_pool_deallocate(pool, ptr1);
+
+    void *ptr;
+
+    ptr = redback_memory_pool_begin(pool);
+    TEST_ASSERT_EQUAL(ptr, ptr2);
+
+    ptr = redback_memory_pool_iterator_next(pool, ptr);
+    TEST_ASSERT_EQUAL(ptr, ptr4);
+
+    ptr = redback_memory_pool_iterator_next(pool, ptr);
+    TEST_ASSERT_EQUAL(ptr, ptr5);
+
+    ptr = redback_memory_pool_iterator_next(pool, ptr);
+    TEST_ASSERT_EQUAL(ptr, redback_memory_pool_cend(pool));
+
+    redback_memory_pool_free(pool);
+}

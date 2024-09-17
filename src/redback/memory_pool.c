@@ -73,6 +73,34 @@ void redback_memory_pool_deallocate(struct redback_memory_pool *pool, const void
 
 /* # */
 
+const void *redback_memory_pool_cend(const struct redback_memory_pool *pool) {
+    return pool->free;
+}
+
+const void *redback_memory_pool_cbegin(const struct redback_memory_pool *pool) {
+    if (0 == pool->size)
+        return NULL;
+    size_t i;
+    for (i = 0; i < pool->capacity && (int)pool->free[i]; ++i)
+        ;
+    return (uint8_t *)pool->array + (i * pool->usize);
+}
+
+void *redback_memory_pool_begin(struct redback_memory_pool *pool) {
+    return (void *)redback_memory_pool_cbegin(pool);
+}
+
+void *redback_memory_pool_iterator_next(const struct redback_memory_pool *pool, const void *it) {
+    size_t i = (((uint8_t *)it - (uint8_t *)pool->array) / pool->usize) + 1;
+    while (i < pool->capacity && (int)pool->free[i])
+        i++;
+    if (i == pool->capacity)
+        return (void *)redback_memory_pool_cend(pool);
+    return (uint8_t *)pool->array + (i * pool->usize);
+}
+
+/* # */
+
 size_t redback_memory_pool_get_size(const struct redback_memory_pool *pool) {
     return pool->size;
 }
