@@ -38,6 +38,7 @@ target_include_directories(
 
 target_link_libraries(
     ${PROJECT_UNITY_TESTS}
+    PRIVATE ${PROJECT_SOURCELIB}
     PRIVATE ${PROJECT_UNITY_LIBTARGET})
 
 if (DEFINED PROJECT_HEADERS)
