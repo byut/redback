@@ -15,11 +15,11 @@
 /* # */
 
 struct redback_memory_pool {
-    void *array;
-    bool *free;
-    size_t usize;
-    size_t size;
-    size_t capacity;
+    void *array;     ///< Pointer to the memory block array.
+    bool *free;      ///< Boolean array to track which blocks are free (true) or used (false).
+    size_t usize;    ///< Size of each memory block (unit) in bytes.
+    size_t size;     ///< Current number of used memory blocks.
+    size_t capacity; ///< Total capacity of memory blocks that can be allocated.
 };
 
 /* # */
@@ -73,8 +73,8 @@ void redback_memory_pool_deallocate(struct redback_memory_pool *pool, const void
 
 /* # */
 
-const void *redback_memory_pool_cend(const struct redback_memory_pool *pool) {
-    return pool->free;
+void *redback_memory_pool_begin(struct redback_memory_pool *pool) {
+    return (void *)redback_memory_pool_cbegin(pool);
 }
 
 const void *redback_memory_pool_cbegin(const struct redback_memory_pool *pool) {
@@ -86,9 +86,13 @@ const void *redback_memory_pool_cbegin(const struct redback_memory_pool *pool) {
     return (uint8_t *)pool->array + (i * pool->usize);
 }
 
-void *redback_memory_pool_begin(struct redback_memory_pool *pool) {
-    return (void *)redback_memory_pool_cbegin(pool);
+/* # */
+
+const void *redback_memory_pool_cend(const struct redback_memory_pool *pool) {
+    return pool->free;
 }
+
+/* # */
 
 void *redback_memory_pool_iterator_next(const struct redback_memory_pool *pool, const void *it) {
     size_t i = (((uint8_t *)it - (uint8_t *)pool->array) / pool->usize) + 1;
