@@ -86,7 +86,7 @@ target_compile_definitions(
 target_link_libraries(
     ${PROJECT_EXECUTABLE}
     PRIVATE ${PROJECT_LOGLIB}
-    PRIVATE ${PROJECT_SOURCELIB})
+    PRIVATE ${PROJECT_BASELIB})
 
 target_include_directories(
     ${PROJECT_EXECUTABLE}
