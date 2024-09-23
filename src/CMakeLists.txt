@@ -38,18 +38,10 @@ target_compile_options(
 
 target_include_directories(
     ${PROJECT_BASELIB}
-    PRIVATE $<TARGET_PROPERTY:event_core,INCLUDE_DIRECTORIES>
-    PRIVATE $<TARGET_PROPERTY:event_extra,INCLUDE_DIRECTORIES>
-    PRIVATE $<TARGET_PROPERTY:event_pthreads,INCLUDE_DIRECTORIES>
-    PRIVATE $<TARGET_PROPERTY:event_openssl,INCLUDE_DIRECTORIES>
     PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 target_link_libraries(
-    ${PROJECT_BASELIB}
-    PRIVATE event_core
-    PRIVATE event_extra
-    PRIVATE event_pthreads
-    PRIVATE event_openssl)
+    ${PROJECT_BASELIB})
 
 if (DEFINED PROJECT_HEADERS)
     add_dependencies(${PROJECT_BASELIB} ${PROJECT_HEADERS})
@@ -62,4 +54,45 @@ if(DEFINED CLANG_TIDY_COMMAND)
         PROPERTY CXX_CLANG_TIDY ${CLANG_TIDY_COMMAND})
 endif()
 
-#
+##### Network Unit ############################################################
+
+if (NOT DEFINED PROJECT_NUNITLIB)
+    set(PROJECT_NUNITLIB ${PROJECT_NAME}-nunit)
+    set(PROJECT_NUNITLIB ${PROJECT_NUNITLIB} PARENT_SCOPE)
+endif()
+
+add_library(
+    ${PROJECT_NUNITLIB} STATIC
+    lib.c)
+
+target_compile_options(
+    ${PROJECT_NUNITLIB}
+    PRIVATE ${C_COMPILE_OPTIONS})
+
+target_include_directories(
+    ${PROJECT_NUNITLIB}
+    PRIVATE $<TARGET_PROPERTY:event_core,INCLUDE_DIRECTORIES>
+    PRIVATE $<TARGET_PROPERTY:event_extra,INCLUDE_DIRECTORIES>
+    PRIVATE $<TARGET_PROPERTY:event_pthreads,INCLUDE_DIRECTORIES>
+    PRIVATE $<TARGET_PROPERTY:event_openssl,INCLUDE_DIRECTORIES>
+    PRIVATE $<TARGET_PROPERTY:${PROJECT_BASELIB},INCLUDE_DIRECTORIES>
+    PUBLIC ${CMAKE_SOURCE_DIR}/include)
+
+target_link_libraries(
+    ${PROJECT_NUNITLIB}
+    PRIVATE event_core
+    PRIVATE event_extra
+    PRIVATE event_pthreads
+    PRIVATE event_openssl
+    PRIVATE ${PROJECT_BASELIB})
+
+if (DEFINED PROJECT_HEADERS)
+    add_dependencies(${PROJECT_NUNITLIB} ${PROJECT_HEADERS})
+endif()
+
+
+if(DEFINED CLANG_TIDY_COMMAND)
+    set_property(
+        TARGET ${PROJECT_NUNITLIB}
+        PROPERTY CXX_CLANG_TIDY ${CLANG_TIDY_COMMAND})
+endif()
