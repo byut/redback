@@ -96,3 +96,38 @@ if(DEFINED CLANG_TIDY_COMMAND)
         TARGET ${PROJECT_NUNITLIB}
         PROPERTY CXX_CLANG_TIDY ${CLANG_TIDY_COMMAND})
 endif()
+
+##### Processing Unit #########################################################
+
+if (NOT DEFINED PROJECT_PUNITLIB)
+    set(PROJECT_PUNITLIB ${PROJECT_NAME}-punit)
+    set(PROJECT_PUNITLIB ${PROJECT_PUNITLIB} PARENT_SCOPE)
+endif()
+
+add_library(
+    ${PROJECT_PUNITLIB} STATIC
+    lib.c)
+
+target_compile_options(
+    ${PROJECT_PUNITLIB}
+    PRIVATE ${C_COMPILE_OPTIONS})
+
+target_include_directories(
+    ${PROJECT_PUNITLIB}
+    PRIVATE $<TARGET_PROPERTY:${PROJECT_BASELIB},INCLUDE_DIRECTORIES>
+    PUBLIC ${CMAKE_SOURCE_DIR}/include)
+
+target_link_libraries(
+    ${PROJECT_PUNITLIB}
+    PRIVATE ${PROJECT_BASELIB})
+
+if (DEFINED PROJECT_HEADERS)
+    add_dependencies(${PROJECT_PUNITLIB} ${PROJECT_HEADERS})
+endif()
+
+
+if(DEFINED CLANG_TIDY_COMMAND)
+    set_property(
+        TARGET ${PROJECT_PUNITLIB}
+        PROPERTY CXX_CLANG_TIDY ${CLANG_TIDY_COMMAND})
+endif()
