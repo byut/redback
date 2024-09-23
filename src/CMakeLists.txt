@@ -131,3 +131,38 @@ if(DEFINED CLANG_TIDY_COMMAND)
         TARGET ${PROJECT_PUNITLIB}
         PROPERTY CXX_CLANG_TIDY ${CLANG_TIDY_COMMAND})
 endif()
+
+##### Graphical Unit ##########################################################
+
+if (NOT DEFINED PROJECT_GUNITLIB)
+    set(PROJECT_GUNITLIB ${PROJECT_NAME}-gunit)
+    set(PROJECT_GUNITLIB ${PROJECT_GUNITLIB} PARENT_SCOPE)
+endif()
+
+add_library(
+    ${PROJECT_GUNITLIB} STATIC
+    lib.c)
+
+target_compile_options(
+    ${PROJECT_GUNITLIB}
+    PRIVATE ${C_COMPILE_OPTIONS})
+
+target_include_directories(
+    ${PROJECT_GUNITLIB}
+    PRIVATE $<TARGET_PROPERTY:${PROJECT_BASELIB},INCLUDE_DIRECTORIES>
+    PUBLIC ${CMAKE_SOURCE_DIR}/include)
+
+target_link_libraries(
+    ${PROJECT_GUNITLIB}
+    PRIVATE ${PROJECT_BASELIB})
+
+if (DEFINED PROJECT_HEADERS)
+    add_dependencies(${PROJECT_GUNITLIB} ${PROJECT_HEADERS})
+endif()
+
+
+if(DEFINED CLANG_TIDY_COMMAND)
+    set_property(
+        TARGET ${PROJECT_GUNITLIB}
+        PROPERTY CXX_CLANG_TIDY ${CLANG_TIDY_COMMAND})
+endif()
