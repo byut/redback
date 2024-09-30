@@ -151,11 +151,19 @@ target_compile_options(
 
 target_include_directories(
     ${PROJECT_GUNITLIB}
+    PRIVATE $<TARGET_PROPERTY:event_core,INCLUDE_DIRECTORIES>
+    PRIVATE $<TARGET_PROPERTY:event_extra,INCLUDE_DIRECTORIES>
+    PRIVATE $<TARGET_PROPERTY:event_pthreads,INCLUDE_DIRECTORIES>
+    PRIVATE $<TARGET_PROPERTY:event_openssl,INCLUDE_DIRECTORIES>
     PRIVATE $<TARGET_PROPERTY:${PROJECT_BASELIB},INCLUDE_DIRECTORIES>
     PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 target_link_libraries(
     ${PROJECT_GUNITLIB}
+    PRIVATE event_core
+    PRIVATE event_extra
+    PRIVATE event_pthreads
+    PRIVATE event_openssl
     PRIVATE ${CURSES_LIBRARIES}
     PRIVATE ${PROJECT_BASELIB})
 
