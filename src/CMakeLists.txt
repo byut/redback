@@ -134,6 +134,8 @@ endif()
 
 ##### Graphical Unit ##########################################################
 
+find_package(Curses REQUIRED)
+
 if (NOT DEFINED PROJECT_GUNITLIB)
     set(PROJECT_GUNITLIB ${PROJECT_NAME}-gunit)
     set(PROJECT_GUNITLIB ${PROJECT_GUNITLIB} PARENT_SCOPE)
@@ -154,6 +156,7 @@ target_include_directories(
 
 target_link_libraries(
     ${PROJECT_GUNITLIB}
+    PRIVATE ${CURSES_LIBRARIES}
     PRIVATE ${PROJECT_BASELIB})
 
 if (DEFINED PROJECT_HEADERS)
