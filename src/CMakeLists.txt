@@ -143,6 +143,7 @@ endif()
 
 add_library(
     ${PROJECT_GUNITLIB} STATIC
+    redback/gunit.c
     lib.c)
 
 target_compile_options(
