@@ -1,6 +1,7 @@
 #include <log.h>
 
 #include <errno.h>
+#include <signal.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -16,6 +17,18 @@ static struct event_base *evbase = NULL;
 /* # */
 
 static struct redback_gunit *gunit = NULL;
+
+/* # */
+
+static void on_signal(struct redback_gunit *gunit, int signal) {
+    (void)gunit, (void)signal;
+    switch (signal) {
+    case SIGINT: {
+        event_base_loopbreak(evbase);
+        break;
+    }
+    }
+}
 
 /* # */
 
@@ -41,7 +54,9 @@ static int run() {
         return 1;
     }
 
-    return 0;
+    redback_gunit_set_signal_callback(gunit, on_signal);
+
+    return event_base_loop(evbase, 0);
 }
 
 /* # */
