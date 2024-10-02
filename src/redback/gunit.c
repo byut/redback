@@ -3,12 +3,6 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-
-#include <netinet/in.h>
-
-#include <event2/event.h>
 
 #include <ncurses.h>
 
