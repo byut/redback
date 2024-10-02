@@ -15,6 +15,17 @@ struct redback_gunit;
 /* # */
 
 ///
+/// @details Type definition for a signal callback function triggered
+///          whenever a specific signal is captured on a given |redback_gunit| instance.
+///
+/// @param   gunit:  A pointer to the |redback_gunit| that captures the signal.
+/// @param   signal: The signal code that was captured.
+///
+typedef void (*redback_gunit_signal_callback)(struct redback_gunit *gunit, int signal);
+
+/* # */
+
+///
 /// @brief   Create a new |redback_gunit| instance on top of the provided |event_base|.
 ///
 /// @param   evbase: Pointer to the underlying event base.
@@ -48,6 +59,13 @@ int redback_gunit_setup(struct redback_gunit *gunit, const char *term);
 /// @brief   Restore the terminal user interface.
 ///
 int redback_gunit_restore(struct redback_gunit *gunit);
+
+/* # */
+
+///
+/// @brief Register a signal callback function for a given |redback_gunit| instance.
+///
+void redback_gunit_set_signal_callback(struct redback_gunit *gunit, redback_gunit_signal_callback callback);
 
 /* # */
 
