@@ -50,10 +50,12 @@ void redback_gunit_free(struct redback_gunit *gunit);
 ///
 /// @brief   Setup the terminal user interface.
 ///
-/// @param   gunit: a |redback_gunit| instance.
-/// @param   term:  terminal type (e.g., "xterm", "vt100") or |NULL| to use the default.
+/// @param   gunit:  a |redback_gunit| instance.
+/// @param   output: pointer to an output stream (e.g., stdout).
+/// @param   input:  pointer to an input stream (e.g., stdin).
+/// @param   term:   terminal type (e.g., "xterm", "vt100") or |NULL| to use the default.
 ///
-int redback_gunit_setup(struct redback_gunit *gunit, const char *term);
+int redback_gunit_setup(struct redback_gunit *gunit, void *output, void *input, const char *term);
 
 ///
 /// @brief   Restore the terminal user interface.

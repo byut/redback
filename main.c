@@ -2,6 +2,7 @@
 
 #include <errno.h>
 #include <signal.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -48,7 +49,7 @@ static int run() {
         log_fatal("Couldn't setup the graphical unit");
         return 1;
     }
-    rv = redback_gunit_setup(gunit, NULL);
+    rv = redback_gunit_setup(gunit, stdout, stdin, NULL);
     if (-1 == rv) {
         log_fatal("Couldn't setup the graphical unit");
         return 1;

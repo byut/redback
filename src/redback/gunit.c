@@ -66,14 +66,14 @@ void redback_gunit_free(struct redback_gunit *gunit) {
 
 /* # */
 
-int redback_gunit_setup(struct redback_gunit *gunit, const char *term) {
+int redback_gunit_setup(struct redback_gunit *gunit, void *output, void *input, const char *term) {
     assert(NULL == gunit->term);
     assert(NULL == gunit->scr);
 
     [[maybe_unused]] int rv;
 
-    gunit->out = stdout;
-    gunit->in = stdin;
+    gunit->out = output;
+    gunit->in = input;
 
     gunit->term = newterm(term, gunit->out, gunit->in);
     gunit->scr = stdscr;
