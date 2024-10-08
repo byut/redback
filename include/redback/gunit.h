@@ -65,6 +65,22 @@ int redback_gunit_restore(struct redback_gunit *gunit);
 /* # */
 
 ///
+/// @brief Obtain the input stream of a |redback_gunit| instance.
+///
+/// @param gunit: the |redback_gunit| instance.
+///
+void *redback_gunit_get_input_stream(const struct redback_gunit *gunit);
+
+///
+/// @brief Obtain the output stream of a |redback_gunit| instance.
+///
+/// @param gunit: the |redback_gunit| instance.
+///
+void *redback_gunit_get_output_stream(const struct redback_gunit *gunit);
+
+/* # */
+
+///
 /// @brief Register a signal callback function for a given |redback_gunit| instance.
 ///
 void redback_gunit_set_signal_callback(struct redback_gunit *gunit, redback_gunit_signal_callback callback);
