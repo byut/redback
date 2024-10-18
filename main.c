@@ -8,7 +8,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#include <redback/gunit.h>
+#include <redback/term.h>
 
 #include <event2/event.h>
 
@@ -20,23 +20,21 @@ static struct event *evinput = NULL;
 
 /* # */
 
-static struct redback_gunit *gunit = NULL;
-static FILE *gunit_out = NULL;
-static FILE *gunit_in = NULL;
+static struct redback_term *term = NULL;
 
 /* # */
 
 static void on_input(int readfd, short events, void *token) {
     (void)readfd, (void)events, (void)token;
-    assert(readfd == fileno(gunit_in));
+    assert(readfd == fileno(redback_term_input(term)));
     char readbuf[1024];
     long lrv;
     lrv = read(readfd, readbuf, sizeof(readbuf));
     assert(-1 != lrv);
-    write(fileno(gunit_out), readbuf, lrv);
+    write(fileno(redback_term_output(term)), readbuf, lrv);
 }
 
-static void on_signal(struct redback_gunit *gunit, int signal) {
+static void on_signal(struct redback_term *gunit, int signal) {
     (void)gunit, (void)signal;
     switch (signal) {
     case SIGINT: {
@@ -59,25 +57,19 @@ static int run() {
         return 1;
     }
 
-    gunit = redback_gunit_new(evbase);
-    if (NULL == gunit) {
-        log_fatal("Couldn't setup the graphical unit");
+    term = redback_term_new(evbase, stdout, stdin);
+    if (NULL == term) {
+        log_fatal("Couldn't setup the terminal");
         return 1;
     }
-    rv = redback_gunit_setup(gunit, stdout, stdin, NULL);
-    if (-1 == rv) {
-        log_fatal("Couldn't setup the graphical unit");
-        return 1;
-    }
-
-    redback_gunit_set_signal_callback(gunit, on_signal);
-
-    gunit_in = redback_gunit_get_input_stream(gunit);
-    gunit_out = redback_gunit_get_output_stream(gunit);
+    redback_term_setup(term);
+    redback_term_input_enable(term);
+    redback_term_set_signal_callback(term, on_signal);
 
     evinput = event_new(
         evbase,
-        fileno(gunit_in), EV_READ | EV_PERSIST,
+        fileno(redback_term_input(term)),
+        EV_READ | EV_PERSIST,
         on_input, NULL);
     if (!evinput) {
         return 1;
@@ -108,9 +100,10 @@ int main(int argc, char *argv[]) {
 
 /// @brief Perform the necessary memory cleanup before the application terminates.
 static void cleanup() {
-    if (gunit) {
-        redback_gunit_restore(gunit);
-        redback_gunit_free(gunit);
+    if (term) {
+        redback_term_input_disable(term);
+        redback_term_restore(term);
+        redback_term_free(term);
     }
     if (evinput) {
         event_del(evinput);
