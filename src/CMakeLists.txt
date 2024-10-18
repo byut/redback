@@ -134,8 +134,6 @@ endif()
 
 ##### Graphical Unit ##########################################################
 
-find_package(Curses REQUIRED)
-
 if (NOT DEFINED PROJECT_GUNITLIB)
     set(PROJECT_GUNITLIB ${PROJECT_NAME}-gunit)
     set(PROJECT_GUNITLIB ${PROJECT_GUNITLIB} PARENT_SCOPE)
@@ -143,7 +141,6 @@ endif()
 
 add_library(
     ${PROJECT_GUNITLIB} STATIC
-    redback/gunit.c
     redback/term.c
     lib.c)
 
@@ -166,7 +163,6 @@ target_link_libraries(
     PRIVATE event_extra
     PRIVATE event_pthreads
     PRIVATE event_openssl
-    PRIVATE ${CURSES_LIBRARIES}
     PRIVATE ${PROJECT_BASELIB})
 
 if (DEFINED PROJECT_HEADERS)
