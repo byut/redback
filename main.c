@@ -63,6 +63,7 @@ static int run() {
         return 1;
     }
     redback_term_setup(term);
+    log_set_log_stream(redback_term_output(term));
     redback_term_input_enable(term);
     redback_term_set_signal_callback(term, on_signal);
 
@@ -86,6 +87,7 @@ static void cleanup();
 int main(int argc, char *argv[]) {
     (void)argc, (void)argv;
     atexit(cleanup);
+    log_set_log_stream(stdout);
 
     log_info("%s v%s [%s %s]",
              REDBACK_PROJECT_NAME,
@@ -100,6 +102,8 @@ int main(int argc, char *argv[]) {
 
 /// @brief Perform the necessary memory cleanup before the application terminates.
 static void cleanup() {
+    log_info("Cleaning up ...");
+
     if (term) {
         redback_term_input_disable(term);
         redback_term_restore(term);

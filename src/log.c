@@ -21,6 +21,7 @@
  */
 
 #include "log.h"
+#include <stdio.h>
 
 #define MAX_CALLBACKS 32
 
@@ -38,6 +39,8 @@ static struct {
   Callback callbacks[MAX_CALLBACKS];
 } L;
 
+
+static FILE *log_stream = NULL;
 
 static const char *level_strings[] = {
   "TRACE", "DEBUG", "INFO", "WARN", "ERROR", "FATAL"
@@ -136,6 +139,9 @@ static void init_event(log_Event *ev, void *udata) {
   ev->udata = udata;
 }
 
+void log_set_log_stream(FILE *stream) {
+    log_stream = stream;
+}
 
 void log_log(int level, const char *file, int line, const char *fmt, ...) {
   log_Event ev = {
@@ -148,7 +154,7 @@ void log_log(int level, const char *file, int line, const char *fmt, ...) {
   lock();
 
   if (!L.quiet && level >= L.level) {
-    init_event(&ev, stderr);
+    init_event(&ev, log_stream ? log_stream : stdout);
     va_start(ev.ap, fmt);
     stdout_callback(&ev);
     va_end(ev.ap);
